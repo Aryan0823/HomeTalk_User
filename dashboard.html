@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Dashboard</title>
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+        <link rel="stylesheet" href="/assets/css/backend-plugin.min.css">
+        <link rel="stylesheet" href="/assets/css/backend.css?v=1.0.0">
+        <link rel="stylesheet" href="/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+        <link rel="stylesheet" href="/assets/vendor/remixicon/fonts/remixicon.css">
+    </head>
+  <body class="  ">
+    </div>
+          <div class="content-page">
+              <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card card-transparent card-block card-stretch card-height border-none">
+                                <div class="card-body p-0 mt-lg-2 mt-0">
+                                    <h3>Welcome</h3>
+                                    <h3 id="GreetMsg" class="mb-3">{user name}!</h3>
+                                    <p class="mb-0 mr-4">Your dashboard gives you views of key performance or business process.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+          </div>
+
+
+        <script type="module">
+            // Firebase initialization
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+            import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+            import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+            const firebaseConfig = {
+            apiKey: "AIzaSyDqLcufSIP87WT1aEyDI-dKVdTsSBACrEc",
+            authDomain: "interactive-iot-devices-ssrip.firebaseapp.com",
+            projectId: "interactive-iot-devices-ssrip",
+            storageBucket: "interactive-iot-devices-ssrip.appspot.com",
+            messagingSenderId: "180311183138",
+            appId: "1:180311183138:web:4dc86677633cf5f1d8df7b",
+            measurementId: "G-6PTBDPMY0S"
+            };
+        
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+        
+            let currentUser = null;
+        
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    await loadDataAndRenderCharts();
+                } else {
+                    alert("Please sign in to view the dashboard.");
+                }
+            });
+
+            let SignoutButton = document.getElementById('SignOutbtn')
+            let Signout = () => {
+                sessionStorage.removeItem("user-creds");
+                sessionStorage.removeItem("user-info");
+                window.location.href = "./auth-sign-in.html"
+            } 
+            SignoutButton.addEventListener('click',Signout);
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/assets/js/login.js"></script>
+    <script src="/assets/js/firebaseconfig.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+    <script src="/assets/js/backend-bundle.min.js"></script>
+    <script src="/assets/js/table-treeview.js"></script>
+    <script src="/assets/js/customizer.js"></script>
+    <script async src="/assets/js/chart-custom.js"></script>
+    <script src="/assets/js/app.js"></script>
+  </body>
+</html>

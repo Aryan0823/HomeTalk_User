@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="/assets/css/global.css" />
+    <link rel="stylesheet" href="/assets/css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap"
+    />
+  </head>
+  <body>
+    <div class="desktop-1">
+      <header class="frame-parent">
+        <div class="logo1-1-wrapper">
+          <img
+            class="logo1-1-icon"
+            loading="lazy
+            alt=""
+            src="/assets/images/logo.png"
+          />
+        </div>
+        <div class="cashsnap-wrapper">
+            <a href="index.html">
+              <div class="cashsnap">SSRIP</div>
+            </a>
+          </div>
+        <div class="line-wrapper">
+          <div class="frame-child"></div>
+        </div>
+        <div class="frame-wrapper">
+          <div class="story-parent">
+            <div>
+                <button class="nav-button" onclick="redirectTostory()">Story</button>
+            </div>
+            <div>
+                <button class="nav-button" onclick="redirectToaboutus()">About us</button>
+            </div>
+          </div>
+        </div>
+        <div class="frame-container">
+            <button class="rectangle-parent" onclick="redirectToLoginPage()">
+                <div class="frame-item"></div>
+                <b class="login">LOGIN</b>
+            </button>              
+        </div>
+        <button class="rectangle-group" onclick="redirectToSignUpPage()">
+            <div class="frame-inner"></div>
+            <b class="register">SIGNUP</b>
+          </button>
+          
+      </header>
+      <section class="background-box-parent">
+        <div class="background-box">
+          <div class="frame-group">
+            <div class="cashsnap-parent">
+              <div class="cashsnap1">SSRIP</div>
+              <div class="accounting-application">Smart Objects</div>
+            </div>
+            <div class="manage-your-finances">
+              Manage your Device.
+            </div>
+            <!-- <div class="rectangle-container">
+              <div class="rectangle-div"></div> -->
+                <!-- <button  class="open-an-account" href="auth-sign-up.html">OPEN AN ACCOUNT</button> -->
+                <button class="rectangle-group" onclick="redirectToSignUpPage()">
+                    <!-- <div class="frame-inner"></div> -->
+                    <b class="register">OPEN AN ACCOUNT</b>
+                  </button>
+              <!-- <b class="open-an-account" href="auth-sign-up.html">OPEN AN ACCOUNT</b> -->
+            <!-- </div> -->
+          </div>
+        </div>
+        <!-- <img
+          class="removebg-preview-1-icon"
+          loading="lazy" alt=""
+          src="/Aryan/Cashsnap/Cashsnap/html/assets/images/left_side_img.png"
+        /> -->
+        <div class="removebg-preview-1-icon-container">
+            <img class="removebg-preview-1-icon" src="/assets/images/left_side_img.png" alt="Left Side Image">
+          </div>
+        </section>
+    </div>
+    <script>
+        function redirectToLoginPage() {
+          window.location.href = 'auth-sign-in.html';
+        }
+        function redirectToSignUpPage() {
+            window.location.href = 'auth-sign-up.html';
+        }
+        function redirectToaboutus() {
+            window.location.href = 'about-us.html';
+        }
+        function redirectTostory() {
+            window.location.href = 'story.html';
+        }
+        const userEmail = '{{ userEmail }}'; // Replace {{ userEmail }} with the actual email ID from the server-side code
+        document.getElementById('user-email').innerText = userEmail;
+    </script>   
+    
+    <script src="/assets/js/firebaseconfig.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+    <script src="/assets/js/backend-bundle.min.js"></script>
+    <script src="/assets/js/table-treeview.js"></script>
+    <script src="/assets/js/customizer.js"></script>
+    <script async src="/assets/js/chart-custom.js"></script>
+    <script src="/assets/js/app.js"></script>   
+  </body>
+</html>

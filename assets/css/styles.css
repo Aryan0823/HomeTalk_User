@@ -1,0 +1,13 @@
+.cimg{
+    border: 4px solid #ffffff; /* Add a border around the image */
+    border-radius: 50%; /* Make the border rounded for a circular effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 1rem; /* Add a smooth transition effect */
+  }
+  
+  .cimg:hover {
+    transform: scale(1.05); /* Enlarge the image slightly on hover */
+  }
+
+  

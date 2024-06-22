@@ -1,0 +1,27 @@
+/* Normal state */
+.button {
+    color: #4C68EF; /* Text color */
+    background-color: transparent;
+    border: 2px solid #4C68EF; /* Border color same as text color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for color change */
+  }
+  
+  /* Hover state */
+  .button:hover {
+    color: white; /* Text color on hover */
+    background-color: #4C68EF; /* Background color on hover */
+  }
+  
+  /* Adjusting SIGNUP button text alignment */
+.register {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px; /* Adjust as needed */
+}
+
+/* Positioning the left_side_img.png */
+.removebg-preview-1-icon {
+  height: auto; /* Ensure aspect ratio is maintained */
+  max-width: 100%; /* Adjust as needed */
+}
