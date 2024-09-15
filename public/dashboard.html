@@ -140,12 +140,13 @@
         </div>
     </div>
 
-    <div class="main-content" id="main-content">
-        <h1>Welcome to Your Dashboard</h1>
-        <p>This is where you'll see your smart home data and controls.</p>
+    <div class="main-content">
+        <h1>Welcome to Home Talk Dashboard</h1>
+        <p>Email: <span id="userEmail"></span></p>
+        <p>User ID: <span id="userUid"></span></p>
     </div>
-
-    <script>
+    
+   <script>
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
         const hamburger = document.getElementById('hamburger');
@@ -165,6 +166,46 @@
 
         // Initialize sidebar as minimized
         mainContent.style.marginLeft = '80px';
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore , doc , getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth , signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+        const firebaseConfig = {
+        apiKey: "AIzaSyDqLcufSIP87WT1aEyDI-dKVdTsSBACrEc",
+        authDomain: "interactive-iot-devices-ssrip.firebaseapp.com",
+        projectId: "interactive-iot-devices-ssrip",
+        storageBucket: "interactive-iot-devices-ssrip.appspot.com",
+        messagingSenderId: "180311183138",
+        appId: "1:180311183138:web:4dc86677633cf5f1d8df7b",
+        measurementId: "G-6PTBDPMY0S"
+        };
+
+        // Function to load user info from sessionStorage and display on the dashboard
+        const loadUserInfo = () => {
+            // Retrieve user info and credentials from sessionStorage
+            const userInfo = JSON.parse(sessionStorage.getItem("user-info"));
+            const userCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+
+            if (userInfo && userCreds) {
+                // Get the elements to display user email and uid
+                const userEmailElement = document.getElementById('userEmail');
+                const userUidElement = document.getElementById('userUid');
+
+                // Update the elements with the user's email and UID
+                userEmailElement.textContent = userInfo.email; // Display user's email
+                userUidElement.textContent = userCreds.uid; // Display user's UID
+            } else {
+                // If sessionStorage is empty or expired, redirect to login page
+                alert("User not logged in. Redirecting to login...");
+                window.location.href = "./login.html";  // Redirect to login page
+            }
+        };
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', loadUserInfo);
+
     </script>
 </body>
 </html>
