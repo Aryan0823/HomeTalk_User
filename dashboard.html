@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Talk - Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+            --sidebar-bg: #ffffff;
+            --sidebar-hover: #e0e0e0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+        }
+        .sidebar {
+            width: 60px;
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+        }
+        .sidebar.expanded {
+            width: 250px;
+        }
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .brand-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-left: 10px;
+            display: none;
+        }
+        .sidebar.expanded .brand-name {
+            display: inline;
+        }
+        .sidebar-menu {
+            flex-grow: 1;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: var(--sidebar-hover);
+        }
+        .menu-item i {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+        .menu-item span {
+            margin-left: 10px;
+            display: none;
+        }
+        .sidebar.expanded .menu-item span {
+            display: inline;
+        }
+        .sidebar-footer {
+            margin-top: auto;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            margin-left: 80px;
+            transition: margin-left 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -60px;
+                height: 100%;
+                z-index: 1000;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/images/logo.png" alt="Home Talk Logo">
+            <span class="brand-name">Home Talk</span>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item" id="hamburger">
+                <i class="fas fa-bars"></i>
+                <span>Toggle Sidebar</span>
+            </div>
+            <div class="menu-item" id="dashboard-btn">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" id="weather-btn">
+                <i class="fas fa-cloud-sun"></i>
+                <span>Weather</span>
+            </div>
+            <div class="menu-item" id="notification-btn">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <div class="menu-item" id="profile-btn">
+                <i class="fas fa-user-circle"></i>
+                <span>Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <h1>Welcome to Your Dashboard</h1>
+        <p>This is where you'll see your smart home data and controls.</p>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const hamburger = document.getElementById('hamburger');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('expanded');
+            mainContent.style.marginLeft = sidebar.classList.contains('expanded') ? '250px' : '80px';
+        }
+
+        hamburger.addEventListener('click', toggleSidebar);
+
+        // For demonstration, let's add click events to the menu items
+        document.getElementById('dashboard-btn').addEventListener('click', () => alert('Dashboard clicked'));
+        document.getElementById('weather-btn').addEventListener('click', () => alert('Weather clicked'));
+        document.getElementById('notification-btn').addEventListener('click', () => alert('Notifications clicked'));
+        document.getElementById('profile-btn').addEventListener('click', () => alert('Profile clicked'));
+
+        // Initialize sidebar as minimized
+        mainContent.style.marginLeft = '80px';
+    </script>
+</body>
+</html>
