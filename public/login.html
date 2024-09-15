@@ -116,6 +116,7 @@
 </head>
 <body>
     <div class="login-container">
+        <form id="loginFormInner">
         <div class="login-header">
             <img src="/images/logo.png" alt="Home Talk Logo">
             <h1>Home Talk</h1>
@@ -129,16 +130,21 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required placeholder="Enter your password">
             </div>
-            <button onclick="login()" type="submit" class="submit-btn"><a href="dashboard.html">Log In</a></button>
+            <button type="submit" class="submit-btn">Log In</button>
         </form>
         <div class="forgot-password">
             <a href="#">Forgot Password?</a>
         </div>
+        </form>
     </div>
         
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore , doc , getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth , signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
         const firebaseConfig = {
         apiKey: "AIzaSyDqLcufSIP87WT1aEyDI-dKVdTsSBACrEc",
         authDomain: "interactive-iot-devices-ssrip.firebaseapp.com",
@@ -149,26 +155,43 @@
         measurementId: "G-6PTBDPMY0S"
         };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        const app = initializeApp(firebaseConfig);
+         const analytics = getAnalytics(app);
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    console.log('Login successful:', user);
-                    // Redirect or update UI
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error('Login error:', errorCode, errorMessage);
-                });
-        }
+         const db = getFirestore();
+         const auth = getAuth(app);
+
+         let EmailInp = document.getElementById('email')
+         let PassInp = document.getElementById('password')
+         let MainForm = document.getElementById('loginFormInner')
+
+         let SignInUser = evt => {
+               evt.preventDefault();
+               signInWithEmailAndPassword(auth,EmailInp.value,PassInp.value)
+               .then(async (credentials) => {
+                  var ref = doc(db,"users",credentials.user.uid);
+                  const docSnap = await getDoc(ref)
+
+                  if(docSnap.exists()){
+                     sessionStorage.setItem("user-info",JSON.stringify({
+                           firstname : docSnap.data().firstname,
+                           lastname : docSnap.data().lastname,
+                           email : docSnap.data().email,
+                           mobilenumber : docSnap.data().mobilenumber
+                     }))
+                     sessionStorage.setItem("user-creds",JSON.stringify(credentials.user));
+                     window.location.href = "./dashboard.html"
+                  }
+                  console.log(credentials);
+
+               })
+               .catch((error) => {
+                  alert(error.message);
+                  console.log(error.code);
+                  console.log(error.message);
+               })
+         }
+         MainForm.addEventListener('submit',SignInUser);
     </script>
 </body>
 </html>
