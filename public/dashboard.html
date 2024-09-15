@@ -1,211 +1,817 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
+
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Home Talk - Dashboard</title>
+
     <style>
+
         :root {
+
             --primary-color: #4CAF50;
+
             --secondary-color: #45a049;
+
             --text-color: #333;
+
             --bg-color: #f4f4f4;
+
             --sidebar-bg: #ffffff;
+
             --sidebar-hover: #e0e0e0;
+
+            --card-bg: #ffffff;
+
         }
+
+
+
         body {
+
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             margin: 0;
+
             padding: 0;
+
             display: flex;
+
             min-height: 100vh;
+
             background-color: var(--bg-color);
+
         }
+
+
+
         .sidebar {
+
             width: 60px;
+
             background-color: var(--sidebar-bg);
+
             color: var(--text-color);
+
             padding: 20px 10px;
+
             display: flex;
+
             flex-direction: column;
+
             transition: all 0.3s ease;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+
             overflow-x: hidden;
+
         }
+
+
+
         .sidebar.expanded {
+
             width: 250px;
+
         }
+
+
+
         .sidebar-header {
+
             display: flex;
+
             align-items: center;
+
             margin-bottom: 30px;
+
         }
+
+
+
         .sidebar-header img {
+
             width: 40px;
+
             height: 40px;
+
             border-radius: 50%;
+
         }
+
+
+
         .brand-name {
+
             font-size: 1.2rem;
+
             font-weight: bold;
+
             color: var(--primary-color);
+
             margin-left: 10px;
+
             display: none;
+
         }
+
+
+
         .sidebar.expanded .brand-name {
+
             display: inline;
+
         }
+
+
+
         .sidebar-menu {
+
             flex-grow: 1;
+
         }
+
+
+
         .menu-item {
+
             display: flex;
+
             align-items: center;
+
             padding: 10px;
+
             margin-bottom: 10px;
+
             border-radius: 5px;
+
             cursor: pointer;
+
             transition: background-color 0.3s ease;
+
         }
+
+
+
         .menu-item:hover {
+
             background-color: var(--sidebar-hover);
+
         }
+
+
+
         .menu-item i {
+
             font-size: 1.2rem;
+
             width: 20px;
+
             text-align: center;
+
         }
+
+
+
         .menu-item span {
+
             margin-left: 10px;
+
             display: none;
+
         }
+
+
+
         .sidebar.expanded .menu-item span {
+
             display: inline;
+
         }
+
+
+
         .sidebar-footer {
+
             margin-top: auto;
+
         }
+
+
+
         .main-content {
+
             flex-grow: 1;
+
             padding: 20px;
+
             margin-left: 80px;
+
             transition: margin-left 0.3s ease;
+
         }
+
+
+
+        .device-cards {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 20px;
+
+            margin-top: 20px;
+
+        }
+
+
+
+        .device-card {
+
+            background-color: var(--card-bg);
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        }
+
+
+
+        .device-card:not(#outdoor-device) {
+
+            text-align: center;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .device-card:not(#outdoor-device):hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+
+        }
+
+
+
+        .device-card i {
+
+            font-size: 3rem;
+
+            color: var(--primary-color);
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .device-card h3 {
+
+            margin: 0;
+
+            color: var(--text-color);
+
+        }
+
+
+
+        #outdoor-device {
+
+            grid-column: 1 / -1;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+        }
+
+
+
+        #outdoor-device h3 {
+
+            margin-bottom: 15px;
+
+        }
+
+
+
+        #outdoor-device-data {
+
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
+            gap: 10px;
+
+        }
+
+
+
+        .data-item {
+
+            background-color: var(--bg-color);
+
+            padding: 10px;
+
+            border-radius: 5px;
+
+        }
+
+
+
+        .logout-btn {
+
+            padding: 10px 20px;
+
+            background-color: #ff4d4d;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            margin-top: 20px;
+
+        }
+
+
+
+        .logout-btn:hover {
+
+            background-color: #ff3333;
+
+        }
+
+
+
         @media (max-width: 768px) {
+
             .sidebar {
+
                 position: fixed;
+
                 left: -60px;
+
                 height: 100%;
+
                 z-index: 1000;
+
             }
+
+
+
             .sidebar.active {
+
                 left: 0;
+
             }
+
+
+
             .main-content {
+
                 margin-left: 0 !important;
+
             }
+
         }
+
     </style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
+
+
+
 <body>
+
     <div class="sidebar" id="sidebar">
+
         <div class="sidebar-header">
+
             <img src="/images/logo.png" alt="Home Talk Logo">
+
             <span class="brand-name">Home Talk</span>
+
         </div>
+
         <div class="sidebar-menu">
+
             <div class="menu-item" id="hamburger">
+
                 <i class="fas fa-bars"></i>
+
                 <span>Toggle Sidebar</span>
+
             </div>
+
             <div class="menu-item" id="dashboard-btn">
+
                 <i class="fas fa-tachometer-alt"></i>
+
                 <span>Dashboard</span>
+
             </div>
+
             <div class="menu-item" id="weather-btn">
+
                 <i class="fas fa-cloud-sun"></i>
+
                 <span>Weather</span>
+
             </div>
+
             <div class="menu-item" id="notification-btn">
+
                 <i class="fas fa-bell"></i>
+
                 <span>Notifications</span>
+
             </div>
+
         </div>
+
         <div class="sidebar-footer">
+
             <div class="menu-item" id="profile-btn">
+
                 <i class="fas fa-user-circle"></i>
+
                 <span>Profile</span>
+
             </div>
+
         </div>
+
     </div>
+
+
 
     <div class="main-content">
+
         <h1>Welcome to Home Talk Dashboard</h1>
+
         <p>Email: <span id="userEmail"></span></p>
+
         <p>User ID: <span id="userUid"></span></p>
+
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+
+
+
+        <div class="device-cards">
+
+            <div class="device-card" onclick="location.href='ac.html';">
+
+                <i class="fas fa-snowflake"></i>
+
+                <h3>AC</h3>
+
+            </div>
+
+            <div class="device-card" onclick="location.href='humidifier.html';">
+
+                <i class="fas fa-tint"></i>
+
+                <h3>Humidifier</h3>
+
+            </div>
+
+            <div class="device-card" onclick="location.href='fan.html';">
+
+                <i class="fas fa-fan"></i>
+
+                <h3>Fan</h3>
+
+            </div>
+
+            <div class="device-card" onclick="location.href='light.html';">
+
+                <i class="fas fa-lightbulb"></i>
+
+                <h3>Light</h3>
+
+            </div>
+
+            <div class="device-card" id="outdoor-device">
+
+                <i class="fas fa-tree"></i>
+
+                <h3>Outdoor Device</h3>
+
+                <div id="outdoor-device-data">
+
+                    <div id="outdoor-temperature">Temperature: --</div>
+
+                    <div id="outdoor-humidity">Humidity: --</div>
+
+                    <div id="outdoor-light">Light: --</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-    
-   <script>
+
+
+
+    <script>
+
         const sidebar = document.getElementById('sidebar');
+
         const mainContent = document.getElementById('main-content');
+
         const hamburger = document.getElementById('hamburger');
 
+
+
         function toggleSidebar() {
+
             sidebar.classList.toggle('expanded');
+
             mainContent.style.marginLeft = sidebar.classList.contains('expanded') ? '250px' : '80px';
+
         }
+
+
 
         hamburger.addEventListener('click', toggleSidebar);
 
+
+
         // For demonstration, let's add click events to the menu items
+
         document.getElementById('dashboard-btn').addEventListener('click', () => alert('Dashboard clicked'));
+
         document.getElementById('weather-btn').addEventListener('click', () => alert('Weather clicked'));
+
         document.getElementById('notification-btn').addEventListener('click', () => alert('Notifications clicked'));
+
         document.getElementById('profile-btn').addEventListener('click', () => alert('Profile clicked'));
 
+
+
         // Initialize sidebar as minimized
+
         mainContent.style.marginLeft = '80px';
+
     </script>
+
     <script type="module">
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getFirestore , doc , getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        import { getAuth , signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+
+
+
         const firebaseConfig = {
-        apiKey: "AIzaSyDqLcufSIP87WT1aEyDI-dKVdTsSBACrEc",
-        authDomain: "interactive-iot-devices-ssrip.firebaseapp.com",
-        projectId: "interactive-iot-devices-ssrip",
-        storageBucket: "interactive-iot-devices-ssrip.appspot.com",
-        messagingSenderId: "180311183138",
-        appId: "1:180311183138:web:4dc86677633cf5f1d8df7b",
-        measurementId: "G-6PTBDPMY0S"
+
+            apiKey: "AIzaSyDqLcufSIP87WT1aEyDI-dKVdTsSBACrEc",
+
+            authDomain: "interactive-iot-devices-ssrip.firebaseapp.com",
+
+            projectId: "interactive-iot-devices-ssrip",
+
+            storageBucket: "interactive-iot-devices-ssrip.appspot.com",
+
+            messagingSenderId: "180311183138",
+
+            appId: "1:180311183138:web:4dc86677633cf5f1d8df7b",
+
+            measurementId: "G-6PTBDPMY0S"
+
         };
+
+
+
+        // Initialize Firebase
+
+        const app = initializeApp(firebaseConfig);
+
+        const db = getFirestore(app);
+
+        const auth = getAuth(app);
+
+
+
+        let outdoorSensorListener = null;
+
+
 
         // Function to load user info from sessionStorage and display on the dashboard
+
         const loadUserInfo = () => {
-            // Retrieve user info and credentials from sessionStorage
+
             const userInfo = JSON.parse(sessionStorage.getItem("user-info"));
+
             const userCreds = JSON.parse(sessionStorage.getItem("user-creds"));
 
+
+
             if (userInfo && userCreds) {
-                // Get the elements to display user email and uid
+
                 const userEmailElement = document.getElementById('userEmail');
+
                 const userUidElement = document.getElementById('userUid');
 
-                // Update the elements with the user's email and UID
-                userEmailElement.textContent = userInfo.email; // Display user's email
-                userUidElement.textContent = userCreds.uid; // Display user's UID
+
+
+                userEmailElement.textContent = userInfo.email;
+
+                userUidElement.textContent = userCreds.uid;
+
+
+
+                // Setup outdoor sensor listener
+
+                setupOutdoorSensorListener(userCreds.uid);
+
             } else {
-                // If sessionStorage is empty or expired, redirect to login page
+
                 alert("User not logged in. Redirecting to login...");
-                window.location.href = "./login.html";  // Redirect to login page
+
+                window.location.href = "./login.html";
+
             }
+
         };
 
+
+
+        const handleLogout = () => {
+
+            signOut(auth).then(() => {
+
+                sessionStorage.clear();
+
+                window.location.href = "./login.html";
+
+            }).catch((error) => {
+
+                console.error("Error signing out: ", error);
+
+            });
+
+        };
+
+
+
+        // Add event listener to the logout button
+
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+
+
+        // Function to setup outdoor sensor listener
+
+        const setupOutdoorSensorListener = (userId) => {
+
+            const deviceRef = doc(db, "Data", userId, "OutdoorSensors", "outdoor");
+
+
+
+            outdoorSensorListener = onSnapshot(deviceRef, (snapshot) => {
+
+                if (snapshot.exists()) {
+
+                    const data = snapshot.data();
+
+                    displayOutdoorDeviceData(data);
+
+                } else {
+
+                    displayNoSensorMessage();
+
+                    showCreateOutdoorDeviceDialog();
+
+                }
+
+            }, (error) => {
+
+                console.error("Error fetching outdoor sensor data: ", error);
+
+                displayNoSensorMessage();
+
+            });
+
+        };
+
+
+
+        // Function to display outdoor device data
+
+        const displayOutdoorDeviceData = (data) => {
+
+            const temperatureElement = document.getElementById('outdoor-temperature');
+
+            const humidityElement = document.getElementById('outdoor-humidity');
+
+            const lightElement = document.getElementById('outdoor-light');
+
+
+
+            temperatureElement.textContent = `Temperature: ${Math.round(data.temperature)}°C`;
+
+            humidityElement.textContent = `Humidity: ${Math.round(data.humidity)}%`;
+
+            lightElement.textContent = `Light: ${Math.round(data.light)} lux`;
+
+        };
+
+
+
+        // Function to display no sensor message
+
+        const displayNoSensorMessage = () => {
+
+            const temperatureElement = document.getElementById('outdoor-temperature');
+
+            const humidityElement = document.getElementById('outdoor-humidity');
+
+            const lightElement = document.getElementById('outdoor-light');
+
+
+
+            temperatureElement.textContent = "Temperature: --";
+
+            humidityElement.textContent = "Humidity: --";
+
+            lightElement.textContent = "Light: --";
+
+        };
+
+
+
+        // Function to show create outdoor device dialog
+
+        const showCreateOutdoorDeviceDialog = () => {
+
+            if (confirm("Outdoor Device Not Found. Would you like to create an outdoor device?")) {
+
+                window.location.href = "./add-device-category.html";
+
+            }
+
+        };
+
+
+
         // Call the function when the page loads
+
         document.addEventListener('DOMContentLoaded', loadUserInfo);
 
+
+
+        // Clean up listener when the page is unloaded
+
+        window.addEventListener('beforeunload', () => {
+
+            if (outdoorSensorListener) {
+
+                outdoorSensorListener();
+
+            }
+
+        });
+
     </script>
+
 </body>
+
+
+
 </html>
