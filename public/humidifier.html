@@ -1,345 +1,689 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Home Talk - Humidifier Devices</title>
+
     <style>
+
         :root {
+
             --primary-color: #4CAF50;
+
             --secondary-color: #45a049;
+
             --text-color: #333;
+
             --bg-color: #f4f4f4;
+
             --sidebar-bg: #ffffff;
+
             --sidebar-hover: #e0e0e0;
+
             --card-bg: #ffffff;
+
         }
+
         body {
+
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             margin: 0;
+
             padding: 0;
+
             display: flex;
+
             min-height: 100vh;
+
             background-color: var(--bg-color);
+
         }
+
         .sidebar {
+
             width: 60px;
+
             background-color: var(--sidebar-bg);
+
             color: var(--text-color);
+
             padding: 20px 10px;
+
             display: flex;
+
             flex-direction: column;
+
             transition: all 0.3s ease;
+
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+
             overflow-x: hidden;
+
         }
+
         .sidebar.expanded {
+
             width: 250px;
+
         }
+
         .sidebar-header {
+
             display: flex;
+
             align-items: center;
+
             margin-bottom: 30px;
+
         }
+
         .sidebar-header img {
+
             width: 40px;
+
             height: 40px;
+
             border-radius: 50%;
+
         }
+
         .brand-name {
+
             font-size: 1.2rem;
+
             font-weight: bold;
+
             color: var(--primary-color);
+
             margin-left: 10px;
+
             display: none;
+
         }
+
         .sidebar.expanded .brand-name {
+
             display: inline;
+
         }
+
         .sidebar-menu {
+
             flex-grow: 1;
+
         }
+
         .menu-item {
+
             display: flex;
+
             align-items: center;
+
             padding: 10px;
+
             margin-bottom: 10px;
+
             border-radius: 5px;
+
             cursor: pointer;
+
             transition: background-color 0.3s ease;
+
         }
+
         .menu-item:hover {
+
             background-color: var(--sidebar-hover);
+
         }
+
         .menu-item i {
+
             font-size: 1.2rem;
+
             width: 20px;
+
             text-align: center;
+
         }
+
         .menu-item span {
+
             margin-left: 10px;
+
             display: none;
+
         }
+
         .sidebar.expanded .menu-item span {
+
             display: inline;
+
         }
+
         .sidebar-footer {
+
             margin-top: auto;
+
         }
+
         .main-content {
+
             flex-grow: 1;
+
             padding: 20px;
+
             margin-left: 80px;
+
             transition: margin-left 0.3s ease;
+
         }
+
         .device-list {
+
             display: grid;
+
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
             gap: 20px;
+
             margin-top: 20px;
+
         }
+
         .device-item {
+
             background-color: var(--card-bg);
+
             border-radius: 10px;
+
             padding: 20px;
+
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+
             position: relative;
+
             cursor: pointer;
+
         }
+
         .device-item:hover {
+
             transform: translateY(-5px);
+
             box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+
         }
+
         .device-item h3 {
+
             margin-top: 0;
+
             color: var(--primary-color);
+
         }
+
         .device-item p {
+
             margin: 5px 0;
+
             color: var(--text-color);
+
         }
+
         .switch {
+
             position: relative;
+
             display: inline-block;
+
             width: 60px;
+
             height: 34px;
+
         }
+
         .switch input {
+
             opacity: 0;
+
             width: 0;
+
             height: 0;
+
         }
+
         .slider {
+
             position: absolute;
+
             cursor: pointer;
+
             top: 0;
+
             left: 0;
+
             right: 0;
+
             bottom: 0;
+
             background-color: #ccc;
+
             transition: .4s;
+
             border-radius: 34px;
+
         }
+
         .slider:before {
+
             position: absolute;
+
             content: "";
+
             height: 26px;
+
             width: 26px;
+
             left: 4px;
+
             bottom: 4px;
+
             background-color: white;
+
             transition: .4s;
+
             border-radius: 50%;
+
         }
+
         input:checked + .slider {
+
             background-color: var(--primary-color);
+
         }
+
         input:checked + .slider:before {
+
             transform: translateX(26px);
+
         }
+
         .humidifier-icon {
+
             position: absolute;
+
             top: 10px;
+
             right: 10px;
+
             font-size: 24px;
+
             color: var(--primary-color);
+
         }
+
         .humidifier-icon.on {
+
             color: #1E90FF; /* Dodger Blue color for on state */
+
         }
+
         @media (max-width: 768px) {
+
             .sidebar {
+
                 position: fixed;
+
                 left: -60px;
+
                 height: 100%;
+
                 z-index: 1000;
+
             }
+
             .sidebar.active {
+
                 left: 0;
+
             }
+
             .main-content {
+
                 margin-left: 0 !important;
+
             }
+
         }
+
     </style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
+
 <body>
+
     <div class="sidebar" id="sidebar">
+
         <div class="sidebar-header">
+
             <img src="/images/logo.png" alt="Home Talk Logo">
+
             <span class="brand-name">Home Talk</span>
+
         </div>
+
         <div class="sidebar-menu">
+
             <div class="menu-item" id="hamburger">
+
                 <i class="fas fa-bars"></i>
+
                 <span>Toggle Sidebar</span>
+
             </div>
+
             <div class="menu-item" id="dashboard-btn">
+
                 <i class="fas fa-tachometer-alt"></i>
+
                 <span>Dashboard</span>
+
             </div>
+
             <div class="menu-item" id="weather-btn">
+
                 <i class="fas fa-cloud-sun"></i>
+
                 <span>Weather</span>
+
             </div>
+
             <div class="menu-item" id="notification-btn">
+
                 <i class="fas fa-bell"></i>
+
                 <span>Notifications</span>
+
             </div>
+
         </div>
+
         <div class="sidebar-footer">
+
             <div class="menu-item" id="profile-btn">
+
                 <i class="fas fa-user-circle"></i>
+
                 <span>Profile</span>
+
             </div>
+
         </div>
+
     </div>
+
+
 
     <div class="main-content">
+
         <h1>Humidifier Devices</h1>
+
         <div id="device-list" class="device-list">
+
             <!-- Humidifier devices will be dynamically added here -->
+
         </div>
+
     </div>
+
     
+
     <script>
+
         const sidebar = document.getElementById('sidebar');
+
         const mainContent = document.querySelector('.main-content');
+
         const hamburger = document.getElementById('hamburger');
 
+
+
         function toggleSidebar() {
+
             sidebar.classList.toggle('expanded');
+
             mainContent.style.marginLeft = sidebar.classList.contains('expanded') ? '250px' : '80px';
+
         }
+
+
 
         hamburger.addEventListener('click', toggleSidebar);
 
+
+
         // For demonstration, let's add click events to the menu items
+
         document.getElementById('dashboard-btn').addEventListener('click', () => window.location.href = 'index.html');
+
         document.getElementById('weather-btn').addEventListener('click', () => alert('Weather clicked'));
+
         document.getElementById('notification-btn').addEventListener('click', () => alert('Notifications clicked'));
+
         document.getElementById('profile-btn').addEventListener('click', () => alert('Profile clicked'));
 
+
+
         // Initialize sidebar as minimized
+
         mainContent.style.marginLeft = '80px';
+
     </script>
+
     <script type="module">
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+
         import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
+
+
         const firebaseConfig = {
+
             apiKey: "AIzaSyDqLcufSIP87WT1aEyDI-dKVdTsSBACrEc",
+
             authDomain: "interactive-iot-devices-ssrip.firebaseapp.com",
+
             projectId: "interactive-iot-devices-ssrip",
+
             storageBucket: "interactive-iot-devices-ssrip.appspot.com",
+
             messagingSenderId: "180311183138",
+
             appId: "1:180311183138:web:4dc86677633cf5f1d8df7b",
+
             measurementId: "G-6PTBDPMY0S"
+
         };
 
+
+
         // Initialize Firebase
+
         const app = initializeApp(firebaseConfig);
+
         const db = getFirestore(app);
+
         const auth = getAuth(app);
 
+
+
         // Function to fetch and display Humidifier devices
+
         async function fetchAndDisplayHumidifierDevices(userId) {
+
             const deviceList = document.getElementById('device-list');
+
             deviceList.innerHTML = ''; // Clear existing content
 
+
+
             try {
+
                 const humidifierDevicesRef = collection(db, "Data", userId, "Humidifier");
+
                 const querySnapshot = await getDocs(humidifierDevicesRef);
 
+
+
                 if (querySnapshot.empty) {
+
                     deviceList.innerHTML = '<p>No Humidifier devices found.</p>';
+
                     return;
+
                 }
 
+
+
                 querySnapshot.forEach((doc) => {
+
                     const device = doc.data();
+
                     const deviceElement = document.createElement('div');
+
                     deviceElement.className = 'device-item';
+
                     deviceElement.innerHTML = `
+
                         <h3>${doc.id}</h3>
+
                         <p>Status: <span id="status-${doc.id}">${device.deviceStatus || 'N/A'}</span></p>
+
                         <p>Humidity: ${device.humidity || 'N/A'}%</p>
+
                         <p>Mode: ${device.mode || 'Normal'}</p>
+
                         <label class="switch">
+
                             <input type="checkbox" id="switch-${doc.id}" ${device.deviceStatus === 'ON' ? 'checked' : ''}>
+
                             <span class="slider"></span>
+
                         </label>
+
                         <i class="fas fa-tint humidifier-icon ${device.deviceStatus === 'ON' ? 'on' : ''}" id="humidifier-${doc.id}"></i>
+
                     `;
+
                     deviceList.appendChild(deviceElement);
 
+
+
                     // Add event listener for the switch
-                    const switchElement = deviceElement.querySelector(#switch-${doc.id});
+
+                    const switchElement = deviceElement.querySelector(`#switch-${doc.id}`);
+
                     switchElement.addEventListener('change', async (event) => {
+
                         event.stopPropagation(); // Prevent the click event from bubbling up to the device item
+
                         const newStatus = event.target.checked ? 'ON' : 'OFF';
+
                         await updateDeviceStatus(userId, doc.id, newStatus);
-                        document.getElementById(status-${doc.id}).textContent = newStatus;
-                        const humidifierIcon = document.getElementById(humidifier-${doc.id});
+
+                        document.getElementById(`status-${doc.id}`).textContent = newStatus;
+
+                        const humidifierIcon = document.getElementById(`humidifier-${doc.id}`);
+
                         humidifierIcon.classList.toggle('on', event.target.checked);
+
                     });
+
+
 
                     // Add click event listener to the device item
+
                     deviceElement.addEventListener('click', () => {
-                        window.location.href = humidifier-details.html?userId=${userId}&deviceId=${doc.id};
+
+                        window.location.href = `humidifier-details.html?userId=${userId}&deviceId=${doc.id}`;
+
                     });
+
                 });
+
             } catch (error) {
+
                 console.error("Error fetching Humidifier devices: ", error);
+
                 deviceList.innerHTML = '<p>Error loading Humidifier devices. Please try again later.</p>';
+
             }
+
         }
+
+
 
         // Function to update device status in Firestore
+
         async function updateDeviceStatus(userId, deviceId, newStatus) {
+
             try {
+
                 const deviceRef = doc(db, "Data", userId, "Humidifier", deviceId);
+
                 await updateDoc(deviceRef, {
+
                     deviceStatus: newStatus
+
                 });
-                console.log(Device ${deviceId} status updated to ${newStatus});
+
+                console.log(`Device ${deviceId} status updated to ${newStatus}`);
+
             } catch (error) {
+
                 console.error("Error updating device status: ", error);
+
             }
+
         }
 
+
+
         // Check authentication state and fetch devices
+
         onAuthStateChanged(auth, (user) => {
+
             if (user) {
+
                 fetchAndDisplayHumidifierDevices(user.uid);
+
             } else {
+
                 // If not logged in, redirect to login page
+
                 window.location.href = 'login.html';
+
             }
+
         });
+
     </script>
+
 </body>
+
 </html>
