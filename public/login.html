@@ -133,7 +133,7 @@
             <button type="submit" class="submit-btn">Log In</button>
         </form>
         <div class="forgot-password">
-            <a href="#">Forgot Password?</a>
+            <a href="#" id="forgot-password-link">Forgot Password?</a>
         </div>
         </form>
     </div>
@@ -143,8 +143,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getFirestore , doc , getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        import { getAuth , signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth , signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+
         const firebaseConfig = {
         apiKey: "AIzaSyDqLcufSIP87WT1aEyDI-dKVdTsSBACrEc",
         authDomain: "interactive-iot-devices-ssrip.firebaseapp.com",
@@ -156,42 +157,66 @@
         };
 
         const app = initializeApp(firebaseConfig);
-         const analytics = getAnalytics(app);
+        const analytics = getAnalytics(app);
 
-         const db = getFirestore();
-         const auth = getAuth(app);
+        const db = getFirestore();
+        const auth = getAuth(app);
 
-         let EmailInp = document.getElementById('email')
-         let PassInp = document.getElementById('password')
-         let MainForm = document.getElementById('loginFormInner')
+        let EmailInp = document.getElementById('email');
+        let PassInp = document.getElementById('password');
+        let MainForm = document.getElementById('loginFormInner');
+        let ForgotPasswordLink = document.getElementById('forgot-password-link');
 
-         let SignInUser = evt => {
-               evt.preventDefault();
-               signInWithEmailAndPassword(auth,EmailInp.value,PassInp.value)
-               .then(async (credentials) => {
-                  var ref = doc(db,"users",credentials.user.uid);
-                  const docSnap = await getDoc(ref)
+        // Function to handle user sign-in
+        let SignInUser = evt => {
+            evt.preventDefault();
+            signInWithEmailAndPassword(auth, EmailInp.value, PassInp.value)
+            .then(async (credentials) => {
+                var ref = doc(db, "users", credentials.user.uid);
+                const docSnap = await getDoc(ref);
 
-                  if(docSnap.exists()){
-                     sessionStorage.setItem("user-info",JSON.stringify({
-                           firstname : docSnap.data().firstname,
-                           lastname : docSnap.data().lastname,
-                           email : docSnap.data().email,
-                           mobilenumber : docSnap.data().mobilenumber
-                     }))
-                     sessionStorage.setItem("user-creds",JSON.stringify(credentials.user));
-                     window.location.href = "./dashboard.html"
-                  }
-                  console.log(credentials);
+                if (docSnap.exists()) {
+                    sessionStorage.setItem("user-info", JSON.stringify({
+                        firstname: docSnap.data().firstname,
+                        lastname: docSnap.data().lastname,
+                        email: docSnap.data().email,
+                        mobilenumber: docSnap.data().mobilenumber
+                    }));
+                    sessionStorage.setItem("user-creds", JSON.stringify(credentials.user));
+                    window.location.href = "./dashboard.html";
+                }
+                console.log(credentials);
+            })
+            .catch((error) => {
+                alert(error.message);
+                console.log(error.code);
+                console.log(error.message);
+            });
+        };
 
-               })
-               .catch((error) => {
-                  alert(error.message);
-                  console.log(error.code);
-                  console.log(error.message);
-               })
-         }
-         MainForm.addEventListener('submit',SignInUser);
+        // Function to handle password reset
+        let ForgotPassword = evt => {
+            evt.preventDefault();
+            const email = EmailInp.value;
+
+            if (email) {
+                sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    alert('Password reset email sent! Check your inbox.');
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    console.log(error.code);
+                    console.log(error.message);
+                });
+            } else {
+                alert('Please enter your email address first.');
+            }
+        };
+
+        // Event listeners
+        MainForm.addEventListener('submit', SignInUser);
+        ForgotPasswordLink.addEventListener('click', ForgotPassword);
     </script>
 </body>
 </html>
