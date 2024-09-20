@@ -235,6 +235,17 @@
         .back-button:hover {
             background-color: #45a049;
         }
+
+        .delete-icon {
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+        .delete-icon:hover {
+            color: #ff3333;
+        }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -424,6 +435,56 @@
             }
         });
 
+        async function deleteDevice(userId, deviceId) {
+            try {
+                const deviceRef = doc(db, "Data", userId, "AC", deviceId);
+                await deleteDoc(deviceRef);
+                console.log(`Device ${deviceId} deleted successfully`);
+                alert("Device deleted successfully");
+                window.location.href = "dashboard.html"; // Redirect to dashboard after deletion
+            } catch (error) {
+                console.error("Error deleting device: ", error);
+                alert("Error deleting device");
+            }
+        }
+
+        // Function to display device details (updated)
+        function displayDeviceDetails(device, deviceId) {
+            const deviceInfoElement = document.getElementById('device-info');
+            deviceInfoElement.innerHTML = `
+                <h2>${deviceId} <i class="fas fa-trash delete-icon" id="deleteDevice"></i></h2>
+                <p><strong>Status:</strong> <span id="status">${device.deviceStatus || 'N/A'}</span></p>
+                <p><strong>Set Temperature:</strong> ${device.setTemperature || 'N/A'}°C</p>
+                <p><strong>Room Temperature:</strong> ${device.roomTemperature || 'N/A'}°C</p>
+                <p><strong>Last Updated:</strong> ${device.lastUpdated ? new Date(device.lastUpdated.toDate()).toLocaleString() : 'N/A'}</p>
+                <label class="switch">
+                    <input type="checkbox" id="deviceSwitch" ${device.deviceStatus === 'ON' ? 'checked' : ''}>
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-snowflake ac-icon ${device.deviceStatus === 'ON' ? 'rotating' : ''}" id="acIcon"></i>
+            `;
+
+            // Add event listener for the switch
+            const switchElement = document.getElementById('deviceSwitch');
+            switchElement.addEventListener('change', async (event) => {
+                const newStatus = event.target.checked ? 'ON' : 'OFF';
+                const updated = await updateDeviceStatus(auth.currentUser.uid, deviceId, newStatus);
+                if (updated) {
+                    document.getElementById('status').textContent = newStatus;
+                    const acIcon = document.getElementById('acIcon');
+                    acIcon.classList.toggle('rotating', event.target.checked);
+                }
+            });
+
+            // Add event listener for the delete icon
+            const deleteIcon = document.getElementById('deleteDevice');
+            deleteIcon.addEventListener('click', () => {
+                if (confirm("Are you sure you want to delete this device?")) {
+                    deleteDevice(auth.currentUser.uid, deviceId);
+                }
+            });
+        }
+        
         // Sidebar toggle functionality
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.querySelector('.main-content');
