@@ -253,6 +253,45 @@
         .delete-icon:hover {
             color: #ff3333;
         }
+        .temperature-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .temp-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .temp-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .temp-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .current-temp {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+            min-width: 60px;
+            text-align: center;
+        }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -364,24 +403,59 @@
             }
         }
 
-        // Function to display device details
+        // Update the displayDeviceDetails function
         function displayDeviceDetails(device, deviceId) {
             const deviceInfoElement = document.getElementById('device-info');
             deviceInfoElement.innerHTML = `
-        <h2>${deviceId}</h2>
-        <p><strong>Status:</strong> <span id="status">${device.deviceStatus || 'N/A'}</span></p>
-        <p><strong>Set Temperature:</strong> ${device.setTemperature || 'N/A'}°C</p>
-        <p><strong>Room Temperature:</strong> ${device.roomTemperature || 'N/A'}°C</p>
-        <p><strong>Last Updated:</strong> ${device.lastUpdated ? new Date(device.lastUpdated.toDate()).toLocaleString() : 'N/A'}</p>
-        <label class="switch">
-            <input type="checkbox" id="deviceSwitch" ${device.deviceStatus === 'ON' ? 'checked' : ''}>
-            <span class="slider"></span>
-        </label>
-        <i class="fas fa-snowflake ac-icon ${device.deviceStatus === 'ON' ? 'rotating' : ''}" id="acIcon"></i>
-        <i class="fas fa-trash-alt delete-icon" id="deleteIcon" title="Delete Device"></i>
-    `;
+                <h2>${deviceId}</h2>
+                <p><strong>Status:</strong> <span id="status">${device.deviceStatus || 'N/A'}</span></p>
+                <div class="temperature-control">
+                    <button class="temp-button" id="decreaseTemp" ${device.deviceStatus === 'OFF' ? 'disabled' : ''}>-</button>
+                    <div class="current-temp"><span id="setTemp">${device.setTemperature || '24'}</span>°C</div>
+                    <button class="temp-button" id="increaseTemp" ${device.deviceStatus === 'OFF' ? 'disabled' : ''}>+</button>
+                </div>
+                <p><strong>Room Temperature:</strong> ${device.roomTemperature || 'N/A'}°C</p>
+                <label class="switch">
+                    <input type="checkbox" id="deviceSwitch" ${device.deviceStatus === 'ON' ? 'checked' : ''}>
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-snowflake ac-icon ${device.deviceStatus === 'ON' ? 'rotating' : ''}" id="acIcon"></i>
+                <i class="fas fa-trash-alt delete-icon" id="deleteIcon" title="Delete Device"></i>
+            `;
+            // Add temperature control functionality
+            const decreaseTemp = document.getElementById('decreaseTemp');
+            const increaseTemp = document.getElementById('increaseTemp');
+            const setTempElement = document.getElementById('setTemp');
 
-            // Add event listener for the switch
+            async function updateTemperature(newTemp) {
+                try {
+                    const deviceRef = doc(db, "Data", auth.currentUser.uid, "AC", deviceId);
+                    await updateDoc(deviceRef, {
+                        setTemperature: newTemp,
+                        lastUpdated: new Date()
+                    });
+                    setTempElement.textContent = newTemp;
+                } catch (error) {
+                    console.error("Error updating temperature: ", error);
+                    alert("Failed to update temperature. Please try again.");
+                }
+            }
+
+            decreaseTemp.addEventListener('click', () => {
+                const currentTemp = parseInt(setTempElement.textContent);
+                if (currentTemp > 16) {
+                    updateTemperature(currentTemp - 1);
+                }
+            });
+
+            increaseTemp.addEventListener('click', () => {
+                const currentTemp = parseInt(setTempElement.textContent);
+                if (currentTemp < 30) {
+                    updateTemperature(currentTemp + 1);
+                }
+            });
+
+            // Previous switch and delete event listeners
             const switchElement = document.getElementById('deviceSwitch');
             switchElement.addEventListener('change', async (event) => {
                 const newStatus = event.target.checked ? 'ON' : 'OFF';
@@ -390,10 +464,13 @@
                     document.getElementById('status').textContent = newStatus;
                     const acIcon = document.getElementById('acIcon');
                     acIcon.classList.toggle('rotating', event.target.checked);
+                    
+                    // Enable/disable temperature controls based on device status
+                    decreaseTemp.disabled = !event.target.checked;
+                    increaseTemp.disabled = !event.target.checked;
                 }
             });
 
-            // Add event listener for the delete icon
             const deleteIcon = document.getElementById('deleteIcon');
             deleteIcon.addEventListener('click', async () => {
                 if (confirm("Are you sure you want to delete this device?")) {

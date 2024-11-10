@@ -360,9 +360,8 @@
             deviceInfoElement.innerHTML = `
         <h2>${deviceId}</h2>
         <p><strong>Status:</strong> <span id="status">${device.deviceStatus || 'N/A'}</span></p>
-        <p><strong>Speed:</strong> ${device.speed || 'N/A'}</p>
-        <p><strong>Mode:</strong> ${device.mode || 'Normal'}</p>
-        <p><strong>Last Updated:</strong> ${device.lastUpdated ? new Date(device.lastUpdated.toDate()).toLocaleString() : 'N/A'}</p>
+        <p><strong>Set Speed:</strong> ${device.setFanSpeed || 'N/A'}</p>
+        <p><strong>Room Temperature:</strong> ${device.roomTemperature || 'Normal'}</p>
         <label class="switch">
             <input type="checkbox" id="deviceSwitch" ${device.deviceStatus === 'ON' ? 'checked' : ''}>
             <span class="slider"></span>

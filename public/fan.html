@@ -285,9 +285,9 @@
                     deviceElement.className = 'device-item';
                     deviceElement.innerHTML = `
                         <h3>${doc.id}</h3>
-                        <p>Status: <span id="status-${doc.id}">${device.deviceStatus || 'N/A'}</span></p>
-                        <p>Speed: ${device.speed || 'N/A'}</p>
-                        <p>Mode: ${device.mode || 'Normal'}</p>
+                        <p><strong>Status:</strong> <span id="status">${device.deviceStatus || 'N/A'}</span></p>
+                        <p><strong>Set Speed:</strong> ${device.setFanSpeed || '0'}</p>
+                        <p><strong>Room Temperature:</strong> ${device.roomTemperature || 'Normal'}</p>
                         <label class="switch">
                             <input type="checkbox" id="switch-${doc.id}" ${device.deviceStatus === 'ON' ? 'checked' : ''}>
                             <span class="slider"></span>
