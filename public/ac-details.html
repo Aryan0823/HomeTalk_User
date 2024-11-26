@@ -253,6 +253,7 @@
         .delete-icon:hover {
             color: #ff3333;
         }
+
         .temperature-control {
             display: flex;
             align-items: center;
@@ -291,7 +292,6 @@
             min-width: 60px;
             text-align: center;
         }
-
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -310,20 +310,6 @@
             <div class="menu-item" id="dashboard-btn">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
-            </div>
-            <div class="menu-item" id="weather-btn">
-                <i class="fas fa-cloud-sun"></i>
-                <span>Weather</span>
-            </div>
-            <div class="menu-item" id="notification-btn">
-                <i class="fas fa-bell"></i>
-                <span>Notifications</span>
-            </div>
-        </div>
-        <div class="sidebar-footer">
-            <div class="menu-item" id="profile-btn">
-                <i class="fas fa-user-circle"></i>
-                <span>Profile</span>
             </div>
         </div>
     </div>
@@ -464,7 +450,7 @@
                     document.getElementById('status').textContent = newStatus;
                     const acIcon = document.getElementById('acIcon');
                     acIcon.classList.toggle('rotating', event.target.checked);
-                    
+
                     // Enable/disable temperature controls based on device status
                     decreaseTemp.disabled = !event.target.checked;
                     increaseTemp.disabled = !event.target.checked;
@@ -563,9 +549,6 @@
 
         // Add click events to the menu items
         document.getElementById('dashboard-btn').addEventListener('click', () => window.location.href = './dashboard.html');
-        document.getElementById('weather-btn').addEventListener('click', () => alert('Weather page not implemented'));
-        document.getElementById('notification-btn').addEventListener('click', () => window.location.href = './dashboard.html');
-        document.getElementById('profile-btn').addEventListener('click', () => alert('Profile page not implemented'));
     </script>
 </body>
 

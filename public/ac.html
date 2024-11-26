@@ -11,7 +11,6 @@
     <title>Home Talk - AC Devices</title>
 
     <style>
-
         :root {
 
             --primary-color: #4CAF50;
@@ -62,7 +61,7 @@
 
             transition: all 0.3s ease;
 
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 
             overflow-x: hidden;
 
@@ -168,11 +167,6 @@
 
         }
 
-        .sidebar-footer {
-
-            margin-top: auto;
-
-        }
 
         .main-content {
 
@@ -206,7 +200,7 @@
 
             padding: 20px;
 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -220,7 +214,7 @@
 
             transform: translateY(-5px);
 
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 
         }
 
@@ -306,13 +300,13 @@
 
         }
 
-        input:checked + .slider {
+        input:checked+.slider {
 
             background-color: var(--primary-color);
 
         }
 
-        input:checked + .slider:before {
+        input:checked+.slider:before {
 
             transform: translateX(26px);
 
@@ -334,7 +328,8 @@
 
         .ac-icon.on {
 
-            color: #1E90FF; /* Dodger Blue color for on state */
+            color: #1E90FF;
+            /* Dodger Blue color for on state */
 
         }
 
@@ -365,7 +360,6 @@
             }
 
         }
-
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -402,34 +396,6 @@
 
             </div>
 
-            <div class="menu-item" id="weather-btn">
-
-                <i class="fas fa-cloud-sun"></i>
-
-                <span>Weather</span>
-
-            </div>
-
-            <div class="menu-item" id="notification-btn">
-
-                <i class="fas fa-bell"></i>
-
-                <span>Notifications</span>
-
-            </div>
-
-        </div>
-
-        <div class="sidebar-footer">
-
-            <div class="menu-item" id="profile-btn">
-
-                <i class="fas fa-user-circle"></i>
-
-                <span>Profile</span>
-
-            </div>
-
         </div>
 
     </div>
@@ -448,7 +414,7 @@
 
     </div>
 
-    
+
 
     <script>
 
@@ -477,13 +443,6 @@
         // For demonstration, let's add click events to the menu items
 
         document.getElementById('dashboard-btn').addEventListener('click', () => window.location.href = './dashboard.html');
-
-        document.getElementById('weather-btn').addEventListener('click', () => alert('Weather clicked'));
-
-        document.getElementById('notification-btn').addEventListener('click', () => window.location.href = './notification.html');
-
-        document.getElementById('profile-btn').addEventListener('click', () => alert('Profile clicked'));
-
 
 
         // Initialize sidebar as minimized
