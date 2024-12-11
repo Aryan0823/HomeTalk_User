@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "hometalk-cp", 
     "public": "public",
     "ignore": [
       "firebase.json",
